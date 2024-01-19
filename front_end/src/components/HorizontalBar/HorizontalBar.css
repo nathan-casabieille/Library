@@ -1,0 +1,63 @@
+.horizontalBar {
+  background-color: var(--light-dark) !important;
+  color: var(--light) !important;
+  border-radius: 11px;
+  max-height: 50px;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.horizontalBar::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-item {
+  /* min-width: 142px !important; */
+  width: auto;
+  text-align: center;
+  /* max-height: 40px !important; */
+}
+
+.nav-link-dashboard {
+  color: var(--light) !important;
+  transition: color 0.3s ease-in-out;
+  min-width: 150px !important;
+
+  display: block;
+  padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+  font-size: var(--bs-nav-link-font-size);
+  font-weight: var(--bs-nav-link-font-weight);
+  color: var(--bs-nav-link-color);
+  text-decoration: none;
+
+  font-family: Quadran;
+  line-height: normal;
+  font-stretch: normal;
+  text-align: center;
+
+  padding-left: var(--bs-navbar-nav-link-padding-x);
+  padding-right: var(--bs-navbar-nav-link-padding-x);
+}
+
+.nav-link-dashboard:hover {
+  color: var(--light) !important;
+}
+
+.active,
+.active > .nav-link-dashboard {
+  background-color: var(--light);
+  color: var(--dark) !important;
+  border-radius: 8px;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.btnscroll {
+  background-color: var(--dark) !important;
+  color: var(--light) !important;
+  border-radius: 100%;
+  height: 40px;
+  width: 40px;
+}

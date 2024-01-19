@@ -1,0 +1,34 @@
+.dropdown-toggle::after {
+    display: none !important; 
+}
+
+.badge-next-release {
+    width: 65px;
+    text-align: center;
+}
+
+.badge-season {
+    width: 38px;
+    text-align: center;
+}
+
+.badge-episode {
+    width: 56px;
+    text-align: center;
+}
+
+.badge-last-check {
+    width: 100px;
+    text-align: center;
+}
+
+.badge-last-release {
+    width: 72px;
+    text-align: center;
+}
+
+.media-card:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+  

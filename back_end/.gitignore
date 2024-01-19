@@ -1,0 +1,4 @@
+node_modules
+mongo-data
+package-lock.json
+.env

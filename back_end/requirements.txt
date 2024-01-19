@@ -1,0 +1,11 @@
+Flask
+pymongo
+bcrypt
+pyjwt
+flask_cors
+flask-talisman
+gunicorn
+pytest-flask
+pytest
+pydantic
+python-dotenv
