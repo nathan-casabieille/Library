@@ -52,6 +52,43 @@ const mockAnimes = [
   }
 ];
 
+const mockMangas = [
+  {
+    title: 'One Piece',
+    rating: '5',
+    status: STATUS.ONGOING,
+    chapter: '1104',
+    next_episode_release_date: '',
+    last_check: '2024-01-19T12:50:10.273Z',
+    last_release_date: '2024-01-18'
+  },
+  {
+    title: 'One Punch Man',
+    rating: 3,
+    status: STATUS.ONGOING,
+    chapter: '200',
+    next_episode_release_date: '',
+    last_check: '2024-01-19T12:51:10.666Z',
+    last_release_date: '2023-12-28'
+  },
+  {
+    title: 'Uzumaki',
+    rating: '5',
+    status: STATUS.FINISHED,
+    chapter: 0,
+    next_episode_release_date: '',
+    last_check: null
+  },
+  {
+    title: 'The Promised Neverland',
+    rating: '4',
+    status: STATUS.FINISHED,
+    chapter: 0,
+    next_episode_release_date: '',
+    last_check: null
+  }
+];
+
 describe('sortMedia', () => {
   describe('Error handling', () => {
     it('should handle null input gracefully', () => {
@@ -151,6 +188,38 @@ describe('sortMedia', () => {
       ];
 
       const sorted = sortMedia(mockAnimes, SORT_CRITERIA.ANIME_STATUS, SORT_ORDER.DESCENDING);
+
+      expectedTitlesDescending.forEach((title, index) => {
+        expect(sorted[index].title).toBe(title);
+      });
+    });
+  });
+
+  describe('Sorting by Manga Status', () => {
+    it('should sort media by manga status in ascending order', () => {
+      const expectedTitlesDescending = [
+        'One Piece',
+        'One Punch Man',
+        'Uzumaki',
+        'The Promised Neverland'
+      ];
+
+      const sorted = sortMedia(mockMangas, SORT_CRITERIA.MANGA_STATUS, SORT_ORDER.ASCENDING);
+
+      expectedTitlesDescending.forEach((title, index) => {
+        expect(sorted[index].title).toBe(title);
+      });
+    });
+
+    it('should sort media by manga status in descending order', () => {
+      const expectedTitlesDescending = [
+        'The Promised Neverland',
+        'Uzumaki',
+        'One Punch Man',
+        'One Piece'
+      ];
+
+      const sorted = sortMedia(mockMangas, SORT_CRITERIA.MANGA_STATUS, SORT_ORDER.DESCENDING);
 
       expectedTitlesDescending.forEach((title, index) => {
         expect(sorted[index].title).toBe(title);
