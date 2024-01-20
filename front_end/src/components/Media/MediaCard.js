@@ -2,15 +2,30 @@ import React from 'react';
 import { Container, Row, Col, Dropdown, Image, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-import { API_URL, API_ROUTES, GENRE } from 'Env';
+import { API_URL, API_ROUTES, GENRE, RATING } from 'Env';
 import { PiSword, PiDrop, PiHeart, PiDiamondsFour, PiDotsThreeVertical } from 'react-icons/pi';
 
 const MediaCard = ({ media, renderSpecificContent, handleDelete, handleEdit, onClick }) => {
+  const RATING_COLORS = {
+    [RATING.POOR]: 'red',
+    [RATING.BELOW_AVERAGE]: 'orange',
+    [RATING.AVERAGE]: 'yellow',
+    [RATING.GOOD]: 'lightgreen',
+    [RATING.EXCELLENT]: 'green',
+    [RATING.EXCEPTIONAL]: 'blue'
+  };
+
+  const getRatingColor = (rating) => {
+    return RATING_COLORS[rating] || 'grey'; // 'grey' as default color
+  };
+
+  const genreColor = getRatingColor(media.rating);
+
   const GENRE_COMPONENTS = {
-    [GENRE.SHONEN]: <PiSword size={40} />,
-    [GENRE.SEINEN]: <PiDrop size={40} />,
-    [GENRE.SHOJO]: <PiHeart size={40} />,
-    [GENRE.JOSEI]: <PiDiamondsFour size={40} />
+    [GENRE.SHONEN]: <PiSword color={genreColor} size={40} />,
+    [GENRE.SEINEN]: <PiDrop color={genreColor} size={40} />,
+    [GENRE.SHOJO]: <PiHeart color={genreColor} size={40} />,
+    [GENRE.JOSEI]: <PiDiamondsFour color={genreColor} size={40} />
   };
 
   const genreComponent = GENRE_COMPONENTS[media.genre];
