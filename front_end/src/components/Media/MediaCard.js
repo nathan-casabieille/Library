@@ -53,6 +53,7 @@ const MediaCard = ({ media, renderSpecificContent, handleDelete, handleEdit, onC
             }
             alt="Anime"
             style={{ height: '40px', width: '120px', objectFit: 'cover', marginLeft: '10px' }}
+            loading="lazy"
           />
         </Col>
         <Col className="media-card" onClick={onClick}>
