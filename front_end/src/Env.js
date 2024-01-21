@@ -47,3 +47,5 @@ export const SORT_ORDER = {
   ASCENDING: 'asc',
   DESCENDING: 'desc'
 };
+
+export const TITLE_MAX_LENGTH = 56;

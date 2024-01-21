@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { GENRE, RATING, STATUS } from 'Env';
+import { GENRE, RATING, STATUS, TITLE_MAX_LENGTH } from 'Env';
 
 import { uploadDocument } from 'components/Upload/uploadDocument';
 import SendDocument from 'components/Upload/SendDocument';
@@ -135,6 +135,7 @@ const AnimeForm = ({ anime, handleCloseModal, updateAnimeList }) => {
           value={newAnime.title}
           onChange={handleChange}
           isInvalid={!!validationErrors.title}
+          maxLength={TITLE_MAX_LENGTH}
         />
         <Form.Control.Feedback type="invalid">{validationErrors.title}</Form.Control.Feedback>
       </Form.Group>
