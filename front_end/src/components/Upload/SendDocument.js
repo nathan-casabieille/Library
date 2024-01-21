@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'react-bootstrap';
 
-const SendDocument = ({ setDocumentObj }) => {
+const SendDocument = ({ setDocumentObj, feedback, validationErrors }) => {
   const handleUploadDocument = (ev) => {
     ev.preventDefault();
     const fileObj = ev.target.files && ev.target.files[0];
@@ -18,13 +18,20 @@ const SendDocument = ({ setDocumentObj }) => {
 
   return (
     <Form.Group className="mb-3">
-      <Form.Control type="file" onChange={handleUploadDocument} />
+      <Form.Control
+        type="file"
+        onChange={handleUploadDocument}
+        isInvalid={!!validationErrors.picture}
+      />
+      {feedback}
     </Form.Group>
   );
 };
 
 SendDocument.propTypes = {
-  setDocumentObj: PropTypes.func.isRequired
+  setDocumentObj: PropTypes.func.isRequired,
+  feedback: PropTypes.element,
+  validationErrors: PropTypes.object
 };
 
 export default SendDocument;

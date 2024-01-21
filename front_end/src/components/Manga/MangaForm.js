@@ -9,39 +9,85 @@ import SendDocument from 'components/Upload/SendDocument';
 const MangaForm = ({ manga, handleCloseModal, updateMangaList }) => {
   const [pictureObj, setPictureObj] = useState(null);
   const [newManga, setNewManga] = useState(null);
+  const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
-    if (manga) {
-      setNewManga({
-        title: manga.title || '',
-        genre: manga.genre || GENRE.SHONEN,
-        rating: manga.rating || RATING.AVERAGE,
-        status: manga.status || STATUS.ONGOING,
-        chapter: manga.chapter || 0,
-        last_release_date: manga.last_release_date || '',
-        last_check: manga.last_check || null,
-        website: manga.website || ''
-      });
-    } else {
-      setNewManga({
-        title: '',
-        genre: GENRE.SHONEN,
-        rating: RATING.AVERAGE,
-        status: STATUS.ONGOING,
-        chapter: 0,
-        next_episode_release_date: '',
-        last_check: null,
-        website: ''
-      });
-    }
+    const defaultManga = {
+      title: '',
+      genre: GENRE.SHONEN,
+      rating: RATING.AVERAGE,
+      status: STATUS.ONGOING,
+      chapter: 0,
+      last_release_date: '',
+      last_check: null,
+      website: ''
+    };
+
+    setNewManga({
+      ...defaultManga,
+      ...(manga && {
+        title: manga.title || defaultManga.title,
+        genre: manga.genre || defaultManga.genre,
+        rating: manga.rating || defaultManga.rating,
+        status: manga.status || defaultManga.status,
+        chapter: manga.chapter || defaultManga.chapter,
+        last_release_date: manga.last_release_date || defaultManga.last_release_date,
+        last_check: manga.last_check || defaultManga.last_check,
+        website: manga.website || defaultManga.website
+      })
+    });
   }, [manga]);
 
   const handleChange = (e) => {
     setNewManga({ ...newManga, [e.target.name]: e.target.value });
   };
 
+  const validateForm = () => {
+    const ERROR_MESSAGES = {
+      title: 'Title is required.',
+      genre: 'Genre is required.',
+      rating: 'Rating is required.',
+      status: 'Status is required.',
+      chapter: 'Chapter is required.',
+      last_release_date: 'Last release date is required.',
+      website: 'Website is required.',
+      picture: 'Picture is required.'
+    };
+
+    const { title, genre, rating, status, chapter, last_release_date, website } = newManga;
+    let errors = {};
+    let isValid = true;
+
+    const validateField = (field, errorKey) => {
+      if (field === null || field === undefined || field === '' || field === 0) {
+        isValid = false;
+        errors[errorKey] = ERROR_MESSAGES[errorKey];
+      }
+    };
+
+    validateField(title, 'title');
+    validateField(genre, 'genre');
+    validateField(rating, 'rating');
+    validateField(status, 'status');
+
+    if (status === STATUS.ONGOING) {
+      validateField(chapter, 'chapter');
+      validateField(website, 'website');
+      validateField(last_release_date, 'last_release_date');
+    }
+
+    if (!manga && !pictureObj) {
+      validateField(null, 'picture');
+    }
+
+    setValidationErrors(errors);
+    return isValid;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) return;
 
     if (!manga) {
       const picturePath = await uploadDocument('manga', pictureObj);
@@ -64,10 +110,17 @@ const MangaForm = ({ manga, handleCloseModal, updateMangaList }) => {
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="formMangaStatus" className="mb-3">
         <Form.Label>Status</Form.Label>
-        <Form.Control as="select" name="status" value={newManga.status} onChange={handleChange}>
+        <Form.Control
+          as="select"
+          name="status"
+          value={newManga.status}
+          onChange={handleChange}
+          isInvalid={!!validationErrors.status}
+        >
           <option value={STATUS.FINISHED}>Finished</option>
           <option value={STATUS.ONGOING}>Ongoing</option>
         </Form.Control>
+        <Form.Control.Feedback type="invalid">{validationErrors.status}</Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group controlId="formMangaTitle" className="mb-3">
@@ -78,13 +131,23 @@ const MangaForm = ({ manga, handleCloseModal, updateMangaList }) => {
           name="title"
           value={newManga.title}
           onChange={handleChange}
+          isInvalid={!!validationErrors.title}
         />
+        <Form.Control.Feedback type="invalid">{validationErrors.title}</Form.Control.Feedback>
       </Form.Group>
 
       {!manga && (
         <Form.Group className="mb-3">
           <Form.Label>Picture</Form.Label>
-          <SendDocument setDocumentObj={setPictureObj} />
+          <SendDocument
+            setDocumentObj={setPictureObj}
+            validationErrors={validationErrors}
+            feedback={
+              <Form.Control.Feedback type="invalid">
+                {validationErrors.picture}
+              </Form.Control.Feedback>
+            }
+          />
         </Form.Group>
       )}
       <Row>
@@ -96,12 +159,14 @@ const MangaForm = ({ manga, handleCloseModal, updateMangaList }) => {
               name="genre"
               value={newManga.genre}
               onChange={handleChange}
+              isInvalid={!!validationErrors.genre}
             >
               <option value={GENRE.SHONEN}>Shonen</option>
               <option value={GENRE.SHOJO}>Shojo</option>
               <option value={GENRE.SEINEN}>Seinen</option>
               <option value={GENRE.JOSEI}>Josei</option>
             </Form.Select>
+            <Form.Control.Feedback type="invalid">{validationErrors.genre}</Form.Control.Feedback>
           </Form.Group>
         </Col>
         <Col xs={12} md={6}>
@@ -112,6 +177,7 @@ const MangaForm = ({ manga, handleCloseModal, updateMangaList }) => {
               name="rating"
               value={newManga.rating}
               onChange={handleChange}
+              isInvalid={!!validationErrors.rating}
             >
               <option value={RATING.POOR}>Poor</option>
               <option value={RATING.BELOW_AVERAGE}>Below Average</option>
@@ -120,6 +186,7 @@ const MangaForm = ({ manga, handleCloseModal, updateMangaList }) => {
               <option value={RATING.EXCELLENT}>Excellent</option>
               <option value={RATING.EXCEPTIONAL}>Exceptional</option>
             </Form.Select>
+            <Form.Control.Feedback type="invalid">{validationErrors.rating}</Form.Control.Feedback>
           </Form.Group>
         </Col>
       </Row>
@@ -135,7 +202,11 @@ const MangaForm = ({ manga, handleCloseModal, updateMangaList }) => {
                 name="chapter"
                 value={newManga.chapter}
                 onChange={handleChange}
+                isInvalid={!!validationErrors.chapter}
               />
+              <Form.Control.Feedback type="invalid">
+                {validationErrors.chapter}
+              </Form.Control.Feedback>
             </Form.Group>
           </Col>
 
@@ -147,7 +218,11 @@ const MangaForm = ({ manga, handleCloseModal, updateMangaList }) => {
                 name="last_release_date"
                 value={newManga.last_release_date}
                 onChange={handleChange}
+                isInvalid={!!validationErrors.last_release_date}
               />
+              <Form.Control.Feedback type="invalid">
+                {validationErrors.last_release_date}
+              </Form.Control.Feedback>
             </Form.Group>
           </Col>
 
@@ -159,7 +234,9 @@ const MangaForm = ({ manga, handleCloseModal, updateMangaList }) => {
               name="website"
               value={newManga.website}
               onChange={handleChange}
+              isInvalid={!!validationErrors.website}
             />
+            <Form.Control.Feedback type="invalid">{validationErrors.website}</Form.Control.Feedback>
           </Form.Group>
         </Row>
       )}
