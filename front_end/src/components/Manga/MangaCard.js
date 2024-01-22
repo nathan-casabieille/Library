@@ -61,6 +61,7 @@ const MangaCard = ({ manga, handleDelete, handleEdit, handleShowManga }) => {
   const { status, chapter, last_check, last_release_date } = manga;
 
   const openMangaWebsite = () => {
+    if (manga.status === STATUS.FINISHED) return null;
     window.open(manga.website, '_blank');
     handleShowManga(manga._id);
   };
