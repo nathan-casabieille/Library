@@ -4,13 +4,18 @@ import { deleteManga, updateManga, getMangaList, addManga } from 'services/manga
 import { sortMedia } from 'utils/sort_media';
 import MangaCard from './MangaCard';
 import MangaForm from './MangaForm';
+import MangaTag from './MangaTag';
 import MangaSortOptions from './MangaSortOptions';
 import { SORT_CRITERIA, SORT_ORDER } from 'Env';
 
 const MangaList = () => {
   const [mangas, setMangas] = useState([]);
+
   const [showModal, setShowModal] = useState(false);
+  const [showTagModal, setShowTagModal] = useState(false);
+
   const [selectedManga, setSelectedManga] = useState(null);
+
   const [sortCriteria, setSortCriteria] = useState(SORT_CRITERIA.MANGA_STATUS);
   const [sortOrder, setSortOrder] = useState(SORT_ORDER.ASCENDING);
 
@@ -74,6 +79,13 @@ const MangaList = () => {
 
   return (
     <Container>
+      {selectedManga && (
+        <MangaTag
+          showTagModal={showTagModal}
+          setShowTagModal={setShowTagModal}
+          selectedEntity={selectedManga}
+        />
+      )}
       <div className="mb-4">
         <Button variant="primary" onClick={() => handleModal(true)}>
           Add Manga
@@ -103,6 +115,10 @@ const MangaList = () => {
             handleDelete={handleDelete}
             handleEdit={() => handleModal(true, manga)}
             handleShowManga={handleShowManga}
+            handleTag={() => {
+              setShowTagModal(true);
+              setSelectedManga(manga);
+            }}
           />
         </div>
       ))}

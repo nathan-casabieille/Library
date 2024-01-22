@@ -57,7 +57,7 @@ const BadgeCol = ({ content, bg }) => (
   </Col>
 );
 
-const MangaCard = ({ manga, handleDelete, handleEdit, handleShowManga }) => {
+const MangaCard = ({ manga, handleDelete, handleEdit, handleShowManga, handleTag }) => {
   const { status, chapter, last_check, last_release_date } = manga;
 
   const openMangaWebsite = () => {
@@ -86,6 +86,7 @@ const MangaCard = ({ manga, handleDelete, handleEdit, handleShowManga }) => {
       renderSpecificContent={displayBadges}
       handleDelete={handleDelete}
       handleEdit={handleEdit}
+      handleTag={handleTag}
       onClick={openMangaWebsite}
     />
   );
@@ -114,7 +115,8 @@ MangaCard.propTypes = {
   manga: PropTypes.object.isRequired,
   handleDelete: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
-  handleShowManga: PropTypes.func.isRequired
+  handleShowManga: PropTypes.func.isRequired,
+  handleTag: PropTypes.func.isRequired
 };
 
 export default MangaCard;

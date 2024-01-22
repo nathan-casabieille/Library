@@ -44,7 +44,7 @@ const BadgeCol = ({ content, bg }) => (
   </Col>
 );
 
-const AnimeCard = ({ anime, handleDelete, handleEdit }) => {
+const AnimeCard = ({ anime, handleDelete, handleEdit, handleTag }) => {
   const { status, season, episode, next_episode_release_date } = anime;
 
   const displayBadges = useMemo(
@@ -68,6 +68,7 @@ const AnimeCard = ({ anime, handleDelete, handleEdit }) => {
       renderSpecificContent={displayBadges}
       handleDelete={handleDelete}
       handleEdit={handleEdit}
+      handleTag={handleTag}
     />
   );
 };
@@ -89,7 +90,8 @@ BadgeCol.propTypes = {
 AnimeCard.propTypes = {
   anime: PropTypes.object.isRequired,
   handleDelete: PropTypes.func.isRequired,
-  handleEdit: PropTypes.func.isRequired
+  handleEdit: PropTypes.func.isRequired,
+  handleTag: PropTypes.func.isRequired
 };
 
 export default AnimeCard;

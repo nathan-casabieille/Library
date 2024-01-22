@@ -6,13 +6,19 @@ import AnimeCard from './AnimeCard';
 import AnimeForm from './AnimeForm';
 import AnimeSortOptions from './AnimeSortOptions';
 import { SORT_CRITERIA, SORT_ORDER } from 'Env';
+import AnimeTag from './AnimeTag';
 
 const AnimeList = () => {
   const [animes, setAnimes] = useState([]);
+
   const [showModal, setShowModal] = useState(false);
+
   const [selectedAnime, setSelectedAnime] = useState(null);
+
   const [sortCriteria, setSortCriteria] = useState(SORT_CRITERIA.ANIME_STATUS);
   const [sortOrder, setSortOrder] = useState(SORT_ORDER.ASCENDING);
+
+  const [showTagModal, setShowTagModal] = useState(false);
 
   const fetchAndsortAnimes = useCallback(async () => {
     const fetchedAnimes = await getAnimeList();
@@ -65,6 +71,13 @@ const AnimeList = () => {
 
   return (
     <Container>
+      {selectedAnime && (
+        <AnimeTag
+          showTagModal={showTagModal}
+          setShowTagModal={setShowTagModal}
+          selectedEntity={selectedAnime}
+        />
+      )}
       <div className="mb-4">
         <Button variant="primary" onClick={() => handleModal(true)}>
           Add Anime
@@ -93,6 +106,10 @@ const AnimeList = () => {
             anime={anime}
             handleDelete={handleDelete}
             handleEdit={() => handleModal(true, anime)}
+            handleTag={() => {
+              setShowTagModal(true);
+              setSelectedAnime(anime);
+            }}
           />
         </div>
       ))}

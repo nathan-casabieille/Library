@@ -1,11 +1,27 @@
 import React from 'react';
-import { Container, Row, Col, Dropdown, Image, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import {
+  Container,
+  Row,
+  Col,
+  Dropdown,
+  Image,
+  Tooltip,
+  OverlayTrigger,
+  Badge
+} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 import { API_URL, API_ROUTES, GENRE, RATING } from 'Env';
 import { PiSword, PiDrop, PiHeart, PiDiamondsFour, PiDotsThreeVertical } from 'react-icons/pi';
 
-const MediaCard = ({ media, renderSpecificContent, handleDelete, handleEdit, onClick }) => {
+const MediaCard = ({
+  media,
+  renderSpecificContent,
+  handleDelete,
+  handleEdit,
+  handleTag,
+  onClick
+}) => {
   const RATING_COLORS = {
     [RATING.POOR]: 'red',
     [RATING.BELOW_AVERAGE]: 'orange',
@@ -16,7 +32,7 @@ const MediaCard = ({ media, renderSpecificContent, handleDelete, handleEdit, onC
   };
 
   const getRatingColor = (rating) => {
-    return RATING_COLORS[rating] || 'grey'; // 'grey' as default color
+    return RATING_COLORS[rating] || 'grey';
   };
 
   const genreColor = getRatingColor(media.rating);
@@ -45,22 +61,29 @@ const MediaCard = ({ media, renderSpecificContent, handleDelete, handleEdit, onC
             <div>{genreComponent}</div>
           </OverlayTrigger>
 
-          <Image
-            src={
-              media.picture_path
-                ? `${API_URL}${API_ROUTES.UPLOADS}/${media.picture_path}`
-                : 'https://image.adkami.com/mini/4981.jpg?1695971844' // TODO: replace with placeholder img
-            }
-            alt="Anime"
-            style={{ height: '40px', width: '120px', objectFit: 'cover', marginLeft: '10px' }}
-            loading="lazy"
-          />
+          <div className="image-badge-container">
+            <Image
+              src={
+                media.picture_path
+                  ? `${API_URL}${API_ROUTES.UPLOADS}/${media.picture_path}`
+                  : 'https://image.adkami.com/mini/4981.jpg?1695971844'
+              }
+              alt="Anime"
+              style={{ height: '40px', width: '120px', objectFit: 'cover', marginLeft: '10px' }}
+              loading="lazy"
+            />
+            {media.tags && (
+              <Col xs="auto">
+                <Badge bg="danger">{media.tags}</Badge>
+              </Col>
+            )}
+          </div>
         </Col>
         <Col className="media-card" onClick={onClick}>
           <h5>{media.title}</h5>
         </Col>
-
         {renderSpecificContent}
+
         <Col xs="auto">
           <Dropdown>
             <Dropdown.Toggle
@@ -74,6 +97,9 @@ const MediaCard = ({ media, renderSpecificContent, handleDelete, handleEdit, onC
             <Dropdown.Menu>
               <Dropdown.Item href="#/edit" onClick={() => handleEdit(media._id)}>
                 Edit
+              </Dropdown.Item>
+              <Dropdown.Item href="#/tag" onClick={() => handleTag(media._id)}>
+                Add tag
               </Dropdown.Item>
               <Dropdown.Item href="#/delete" onClick={() => handleDelete(media._id)}>
                 Delete
@@ -91,6 +117,7 @@ MediaCard.propTypes = {
   renderSpecificContent: PropTypes.node.isRequired,
   handleDelete: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
+  handleTag: PropTypes.func.isRequired,
   onClick: PropTypes.func
 };
 
