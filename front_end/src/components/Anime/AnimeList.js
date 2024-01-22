@@ -69,6 +69,12 @@ const AnimeList = () => {
     setSortCriteria(criteria);
   }, []);
 
+  const updateAnimeTags = useCallback((animeId, newTags) => {
+    setAnimes((prevAnimes) =>
+      prevAnimes.map((anime) => (anime._id === animeId ? { ...anime, tags: newTags } : anime))
+    );
+  }, []);
+
   return (
     <Container>
       {selectedAnime && (
@@ -76,6 +82,8 @@ const AnimeList = () => {
           showTagModal={showTagModal}
           setShowTagModal={setShowTagModal}
           selectedEntity={selectedAnime}
+          updateTags={updateAnimeTags}
+          placeholder={selectedAnime?.tags}
         />
       )}
       <div className="mb-4">

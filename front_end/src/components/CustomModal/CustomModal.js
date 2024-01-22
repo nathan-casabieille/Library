@@ -11,7 +11,8 @@ const CustomModal = ({
   title,
   placeholder = '',
   children,
-  setInput
+  setInput,
+  maxLength
 }) => {
   const handleCancel = () => {
     if (cancelButton && cancelButton.submit) {
@@ -42,6 +43,7 @@ const CustomModal = ({
                 type="text"
                 placeholder={placeholder}
                 onChange={(event) => setInput(event.target.value)}
+                maxLength={maxLength}
               />
             </Form.Group>
           </Form>
@@ -89,7 +91,8 @@ CustomModal.propTypes = {
   title: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   children: PropTypes.node,
-  setInput: PropTypes.func
+  setInput: PropTypes.func,
+  maxLength: PropTypes.number
 };
 
 export default CustomModal;

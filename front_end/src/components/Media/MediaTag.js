@@ -2,18 +2,19 @@ import React, { useCallback, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 const MediaTag = (WrappedComponent, updateFunction) => {
-  const HOC = ({ showTagModal, setShowTagModal, selectedEntity }) => {
+  const HOC = ({ showTagModal, setShowTagModal, selectedEntity, updateTags }) => {
     const [tagInput, setTagInput] = useState('');
 
     const onHideModal = useCallback(() => {
       setShowTagModal(false);
-    }, []);
+      setTagInput('');
+    }, [setShowTagModal]);
 
     const onTagSave = useCallback(() => {
       updateFunction(selectedEntity._id, { tags: tagInput }).then(() => {
-        console.log('tag added');
+        updateTags(selectedEntity._id, tagInput);
       });
-    }, [selectedEntity._id, tagInput]);
+    }, [selectedEntity._id, tagInput, updateTags]);
 
     const submitButtonConfig = useMemo(
       () => ({
@@ -38,7 +39,8 @@ const MediaTag = (WrappedComponent, updateFunction) => {
   HOC.propTypes = {
     selectedEntity: PropTypes.object,
     showTagModal: PropTypes.bool,
-    setShowTagModal: PropTypes.func
+    setShowTagModal: PropTypes.func,
+    updateTags: PropTypes.func
   };
 
   return HOC;

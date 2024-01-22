@@ -4,7 +4,17 @@ import MediaTag from 'components/Media/MediaTag';
 import PropTypes from 'prop-types';
 import CustomModal from 'components/CustomModal/CustomModal';
 
-const AnimeTag = ({ showTagModal, onHideModal, setInput, placeholder, submitButtonConfig }) => (
+import { TAG_MAX_LENGTH } from 'Env';
+
+const AnimeTag = ({
+  showTagModal,
+  onHideModal,
+  setInput,
+  placeholder,
+  submitButtonConfig,
+  // eslint-disable-next-line no-unused-vars
+  updateTags
+}) => (
   <CustomModal
     show={showTagModal}
     title="Enter a tag"
@@ -13,6 +23,7 @@ const AnimeTag = ({ showTagModal, onHideModal, setInput, placeholder, submitButt
     onHide={onHideModal}
     placeholder={placeholder}
     submitButton={submitButtonConfig}
+    maxLength={TAG_MAX_LENGTH}
   >
     Add Tags (e.g., theme, author, episode not viewed...)
   </CustomModal>
@@ -23,7 +34,8 @@ AnimeTag.propTypes = {
   onHideModal: PropTypes.func,
   setInput: PropTypes.func,
   placeholder: PropTypes.string,
-  submitButtonConfig: PropTypes.object
+  submitButtonConfig: PropTypes.object,
+  updateTags: PropTypes.func
 };
 
 export default MediaTag(AnimeTag, updateAnime);

@@ -77,6 +77,12 @@ const MangaList = () => {
     [fetchAndSortMangas]
   );
 
+  const updateMangaTags = useCallback((mangaId, newTags) => {
+    setMangas((prevMangas) =>
+      prevMangas.map((manga) => (manga._id === mangaId ? { ...manga, tags: newTags } : manga))
+    );
+  }, []);
+
   return (
     <Container>
       {selectedManga && (
@@ -84,6 +90,8 @@ const MangaList = () => {
           showTagModal={showTagModal}
           setShowTagModal={setShowTagModal}
           selectedEntity={selectedManga}
+          updateTags={updateMangaTags}
+          placeholder={selectedManga?.tags}
         />
       )}
       <div className="mb-4">

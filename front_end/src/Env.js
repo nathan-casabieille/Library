@@ -49,3 +49,4 @@ export const SORT_ORDER = {
 };
 
 export const TITLE_MAX_LENGTH = 56;
+export const TAG_MAX_LENGTH = 13;
