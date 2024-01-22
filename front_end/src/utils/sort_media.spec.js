@@ -59,7 +59,7 @@ const mockMangas = [
     status: STATUS.ONGOING,
     chapter: '1104',
     next_episode_release_date: '',
-    last_check: '2024-01-19T12:50:10.273Z',
+    last_check: '2024-01-20T12:50:10.273Z',
     last_release_date: '2024-01-18'
   },
   {
@@ -68,7 +68,7 @@ const mockMangas = [
     status: STATUS.ONGOING,
     chapter: '200',
     next_episode_release_date: '',
-    last_check: '2024-01-19T12:51:10.666Z',
+    last_check: '2024-01-15T12:51:10.666Z',
     last_release_date: '2023-12-28'
   },
   {

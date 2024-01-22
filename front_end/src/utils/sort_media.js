@@ -32,11 +32,16 @@ const compareByMangaStatus = (a, b) => {
     [STATUS.FINISHED]: 2
   };
 
-  if (a.status === STATUS.ONGOING && b.status === STATUS.ONGOING) {
-    return compareByLastReleaseDate(a, b);
+  if (a.status !== b.status) {
+    return statusOrder[a.status] - statusOrder[b.status];
   }
 
-  return statusOrder[a.status] - statusOrder[b.status];
+  const lastCheckComparison = compareByLastCheck(a, b);
+  if (lastCheckComparison !== 0) {
+    return lastCheckComparison;
+  }
+
+  return compareByLastReleaseDate(a, b);
 };
 
 const compareByReleaseDate = (a, b) => {
@@ -49,6 +54,12 @@ const compareByLastReleaseDate = (a, b) => {
   const daysRemainingA = calculateDaysElapsed(a.last_release_date);
   const daysRemainingB = calculateDaysElapsed(b.last_release_date);
   return daysRemainingA - daysRemainingB;
+};
+
+const compareByLastCheck = (a, b) => {
+  const lastCheckA = calculateDaysElapsed(a.last_check);
+  const lastCheckB = calculateDaysElapsed(b.last_check);
+  return lastCheckA - lastCheckB;
 };
 
 const sortStrategies = {
