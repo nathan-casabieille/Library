@@ -1,9 +1,11 @@
 from flask import request, Blueprint
+
 from manga.controller import getMangaController
 from manga.controller import addMangaController
 from manga.controller import deleteMangaController
 from manga.controller import updateMangaController
 from manga.controller import getAllMangaController
+from manga.controller import resetLastChecksController
 
 mangaRoute = Blueprint('manga_route', __name__)
 
@@ -35,3 +37,7 @@ def getMangaRoute(id):
 @mangaRoute.route(URL_ROUTE, methods=['GET'])
 def getAllMangaRoute():
     return getAllMangaController()
+
+@mangaRoute.route(f"{URL_ROUTE}/reset_last_check", methods=['GET'])
+def update_last_check():
+    return resetLastChecksController()

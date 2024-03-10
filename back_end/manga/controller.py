@@ -1,6 +1,7 @@
 from flask import jsonify
 from database import db as database
 from bson.objectid import ObjectId
+from datetime import datetime, timedelta
 
 from manga.model import Manga
 
@@ -90,3 +91,11 @@ def getAllMangaController():
         return jsonify({"error": e}), 500
 
     return jsonify({"success": True, "message": "Documents fetched successfully", "data": allManga}), 200
+
+def resetLastChecksController():
+    yesterday = datetime.utcnow() - timedelta(days=1)
+    new_last_check = yesterday.replace(microsecond=0).isoformat() + 'Z'
+
+    update_result = collection.update_many({}, {'$set': {'last_check': new_last_check}})
+
+    return jsonify({"success": True, "message": "Last checks were successfully reset", "modifies": update_result.modified_count})
